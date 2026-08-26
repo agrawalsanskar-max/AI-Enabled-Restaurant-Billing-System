@@ -1,0 +1,337 @@
+:root {
+  --purple: #6c5ce7;
+  --black: #1c1c1e;
+  --orange: #ff8a3d;
+  --yellow: #ffd23f;
+  --ink: #1a1a1e;
+  --panel-bg: #e9e8ec;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  background: #d8d7db;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+.card {
+  display: flex;
+  width: 920px;
+  max-width: 100%;
+  height: 560px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.35);
+  background: white;
+}
+
+/* LEFT CANVAS */
+.canvas {
+  position: relative;
+  width: 50%;
+  background: var(--panel-bg);
+  overflow: hidden;
+  display: none;
+}
+@media (min-width: 720px) {
+  .canvas {
+    display: block;
+  }
+}
+
+/* Stage: overflow hidden clips bodies on sink. Bottom-aligned creatures. */
+.stage {
+  position: absolute;
+  bottom: 52px;
+  left: 0;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+}
+
+.creature {
+  position: absolute;
+  bottom: 0;
+  will-change: transform;
+}
+.creature svg {
+  display: block;
+}
+.rig {
+  transform-origin: bottom center;
+}
+
+/* Base positions — reference video layout */
+#orange {
+  left: 2%;
+  z-index: 3;
+}
+#purple {
+  left: 20%;
+  z-index: 1;
+}
+#black {
+  left: 37%;
+  z-index: 2;
+}
+#yellow {
+  left: 46%;
+  z-index: 4;
+}
+
+/* Each creature gets its own unique entrance keyframe */
+#black.enter {
+  animation: enter-black 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0s both;
+}
+#purple.enter {
+  animation: enter-purple 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+}
+#yellow.enter {
+  animation: enter-yellow 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.32s both;
+}
+#orange.enter {
+  animation: enter-orange 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.46s both;
+}
+
+/* Black: flies in from top-right, rotating */
+@keyframes enter-black {
+  from {
+    transform: translateY(-280px) translateX(60px) rotate(25deg) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+/* Purple: tumbles in compressed into a near-square "diamond" silhouette,
+    rotated 45deg, then untucks and rotates upright into its tall rectangle */
+@keyframes enter-purple {
+  0% {
+    transform: translateY(40px) translateX(-80px) rotate(-45deg)
+      scale(0.5, 0.22);
+    opacity: 0;
+  }
+  55% {
+    transform: translateY(10px) translateX(-20px) rotate(-20deg)
+      scale(0.75, 0.55);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1, 1);
+    opacity: 1;
+  }
+}
+/* Yellow: pops up from bottom with overshoot */
+@keyframes enter-yellow {
+  from {
+    transform: translateY(180px) scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+/* Orange: slides in from bottom-left */
+@keyframes enter-orange {
+  0% {
+    transform: translateY(60px) translateX(-50px) scale(0.32, 0.55)
+      rotate(-8deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(10px) translateX(-10px) scale(0.7, 0.8) rotate(-2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) translateX(0) scale(1, 1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.brand {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #2a2a30;
+  font-size: 15px;
+}
+.caption {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #6b6a70;
+  transition: opacity 0.15s ease;
+}
+
+/* RIGHT FORM */
+.form-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+}
+.form-inner {
+  width: 100%;
+  max-width: 320px;
+}
+.logo {
+  width: 22px;
+  height: 22px;
+  margin: 0 auto 22px;
+  display: block;
+}
+h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--ink);
+  text-align: center;
+}
+.subtitle {
+  text-align: center;
+  color: #8b8a90;
+  font-size: 13px;
+  margin: 0 0 28px;
+}
+.field {
+  margin-bottom: 16px;
+}
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b6a70;
+  margin-bottom: 6px;
+}
+.field-wrap {
+  position: relative;
+}
+.field input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #e4e3e8;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  background: #fff;
+}
+.field input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+}
+.field input.pw {
+  padding-right: 38px;
+}
+.eye-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #9a99a0;
+  display: flex;
+}
+.eye-toggle:hover {
+  color: #5a5960;
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 0 22px;
+  font-size: 12.5px;
+}
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #6b6a70;
+  cursor: pointer;
+  user-select: none;
+}
+.remember input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--purple);
+  cursor: pointer;
+}
+.forgot {
+  color: #9a99a0;
+  text-decoration: none;
+}
+.forgot:hover {
+  color: var(--ink);
+}
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    background 0.2s;
+}
+.btn-primary {
+  background: var(--ink);
+  color: white;
+  margin-bottom: 10px;
+}
+.btn-primary:hover {
+  background: #000;
+}
+.btn-primary:active {
+  transform: scale(0.98);
+}
+.btn-google {
+  background: #fff;
+  color: var(--ink);
+  border: 1.5px solid #e4e3e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-google:hover {
+  background: #fafafa;
+}
+.signup {
+  text-align: center;
+  font-size: 13px;
+  color: #8b8a90;
+  margin-top: 26px;
+}
+.signup a {
+  color: var(--purple);
+  font-weight: 600;
+  text-decoration: none;
+}

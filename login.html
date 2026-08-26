@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome back!</title>
+    <link rel="stylesheet" href="login-style.css" />
+  </head>
+  <body>
+    <div class="card">
+      <div class="canvas" id="canvas">
+        <div class="brand">loopline</div>
+        <div class="stage" id="stage">
+          <!-- Orange semicircle — front left, chubby cheek face -->
+          <div class="creature enter" id="orange">
+            <div class="rig" id="orangeRig">
+              <svg width="130" height="76" viewBox="0 0 130 76">
+                <path
+                  d="M0,76 L0,46 C0,18 28,0 65,0 C102,0 130,18 130,46 L130,76 Z"
+                  fill="var(--orange)"
+                />
+                <!-- chubby cheeks (very subtle) -->
+                <circle cx="38" cy="56" r="7" fill="#e8723a" opacity="0.35" />
+                <circle cx="92" cy="56" r="7" fill="#e8723a" opacity="0.35" />
+                <circle
+                  id="oBrowL"
+                  cx="48"
+                  cy="32"
+                  r="2"
+                  fill="#1a1a1e"
+                  opacity="0"
+                />
+                <circle
+                  id="oBrowR"
+                  cx="82"
+                  cy="32"
+                  r="2"
+                  fill="#1a1a1e"
+                  opacity="0"
+                />
+                <circle class="eyedot" cx="48" cy="40" r="3.6" fill="#1a1a1e" />
+                <circle class="eyedot" cx="82" cy="40" r="3.6" fill="#1a1a1e" />
+                <path
+                  id="oMouth"
+                  d="M48,53 Q65,62 82,53"
+                  stroke="#1a1a1e"
+                  stroke-width="3.2"
+                  fill="none"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Purple tall rectangle — tallest, back-left -->
+          <div class="creature enter" id="purple">
+            <div class="rig" id="purpleRig">
+              <svg width="86" height="218" viewBox="0 0 86 218">
+                <path
+                  id="pBody"
+                  d="M0,218 L0,24 C0,11 11,0 24,0 L62,0 C75,0 86,11 86,24 L86,218 Z"
+                  fill="var(--purple)"
+                />
+                <path
+                  id="pBrowL"
+                  d="M24,24 L34,18"
+                  stroke="#1a1a1e"
+                  stroke-width="2.6"
+                  stroke-linecap="round"
+                  opacity="0"
+                />
+                <path
+                  id="pBrowR"
+                  d="M52,18 L62,24"
+                  stroke="#1a1a1e"
+                  stroke-width="2.6"
+                  stroke-linecap="round"
+                  opacity="0"
+                />
+                <circle class="eyedot" cx="33" cy="26" r="2.8" fill="#1a1a1e" />
+                <circle class="eyedot" cx="53" cy="26" r="2.8" fill="#1a1a1e" />
+                <path
+                  id="pMouth"
+                  d="M43,38 L43,44"
+                  stroke="#1a1a1e"
+                  stroke-width="2.6"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Black rectangle — nearly as tall as purple, in front -->
+          <div class="creature enter" id="black">
+            <div class="rig" id="blackRig">
+              <svg width="56" height="232" viewBox="0 0 56 232">
+                <rect
+                  x="0"
+                  y="0"
+                  width="56"
+                  height="232"
+                  rx="12"
+                  fill="var(--black)"
+                />
+                <ellipse cx="18" cy="26" rx="6" ry="7" fill="#fff" />
+                <ellipse cx="38" cy="26" rx="6" ry="7" fill="#fff" />
+                <circle class="eyedot" cx="18" cy="27" r="2.6" fill="#1a1a1e" />
+                <circle class="eyedot" cx="38" cy="27" r="2.6" fill="#1a1a1e" />
+                <path
+                  id="bMouth"
+                  d="M18,44 L38,44"
+                  stroke="#fff"
+                  stroke-width="2.6"
+                  stroke-linecap="round"
+                  opacity="0"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Yellow pill — short, front-right, antenna beak -->
+          <div class="creature enter" id="yellow">
+            <div class="rig" id="yellowRig">
+              <svg width="62" height="108" viewBox="0 0 62 108">
+                <rect
+                  x="0"
+                  y="0"
+                  width="62"
+                  height="108"
+                  rx="31"
+                  fill="var(--yellow)"
+                />
+                <circle class="eyedot" cx="26" cy="38" r="3.8" fill="#1a1a1e" />
+                <line
+                  id="yAntenna"
+                  x1="33"
+                  y1="36"
+                  x2="49"
+                  y2="32"
+                  stroke="#1a1a1e"
+                  stroke-width="3.2"
+                  stroke-linecap="round"
+                />
+                <path
+                  id="yMouth"
+                  d="M20,54 L42,54"
+                  stroke="#1a1a1e"
+                  stroke-width="2.8"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="caption" id="caption">
+          Four little shapes, minding their own business.
+        </div>
+      </div>
+
+      <div class="form-side">
+        <div class="form-inner">
+          <h1>Welcome back!</h1>
+          <p class="subtitle">Please enter your details</p>
+          <form id="loginForm">
+            <div class="field">
+              <label for="email">Email</label>
+              <div class="field-wrap">
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="you@example.com"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <div class="field-wrap">
+                <input
+                  type="password"
+                  id="password"
+                  class="pw"
+                  placeholder="Enter your password"
+                  autocomplete="off"
+                  required
+                />
+                <button
+                  type="button"
+                  class="eye-toggle"
+                  id="eyeToggle"
+                  aria-label="Show password"
+                >
+                  <svg
+                    id="eyeShow"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <svg
+                    id="eyeHide"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="display: none"
+                  >
+                    <path
+                      d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.5 18.5 0 0 1 4.22-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                    />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <label class="remember"
+                ><input type="checkbox" checked /> Remember for 30 days</label
+              >
+              <a href="#" class="forgot">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary" id="loginBtn">
+              Log in
+            </button>
+            <button type="button" class="btn btn-google" id="googleBtn">
+              <svg width="16" height="16" viewBox="0 0 18 18">
+                <path
+                  fill="#4285F4"
+                  d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.71v2.26h2.91A8.78 8.78 0 0 0 17.64 9.2z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.85.87-3.05.87-2.34 0-4.33-1.58-5.04-3.71H.96v2.33A9 9 0 0 0 9 18z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M3.96 10.71A5.41 5.41 0 0 1 3.68 9c0-.59.1-1.17.28-1.71V4.96H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.04l3-2.33z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58A8.59 8.59 0 0 0 9 0 9 9 0 0 0 .96 4.96l3 2.33C4.67 5.16 6.66 3.58 9 3.58z"
+                />
+              </svg>
+              Log in with Google
+            </button>
+          </form>
+          <p class="signup">Don't have an account? <a href="#">Sign up</a></p>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const canvas = document.getElementById("canvas");
+        const caption = document.getElementById("caption");
+        const emailEl = document.getElementById("email");
+        const passEl = document.getElementById("password");
+        const eyeToggle = document.getElementById("eyeToggle");
+        const eyeShow = document.getElementById("eyeShow");
+        const eyeHide = document.getElementById("eyeHide");
+        const loginBtn = document.getElementById("loginBtn");
+        const googleBtn = document.getElementById("googleBtn");
+        const loginForm = document.getElementById("loginForm");
+
+        const O_SMILE = "M48,53 Q65,62 82,53";
+        const O_WORRIED = "M48,58 Q65,52 82,58";
+        const O_NEUTRAL = "M48,53 Q65,56 82,53";
+        const PM_NEUTRAL = "M43,38 L43,44";
+        const PM_WORRIED = "M40,40 Q43,36 47,41";
+        const BM_NEUTRAL = "M18,44 L38,44";
+        const BM_WORRIED = "M17,42 Q28,38 39,42";
+        const YA_N = { x1: 33, y1: 36, x2: 49, y2: 32 };
+        const YA_W = { x1: 33, y1: 34, x2: 47, y2: 39 };
+
+        const P_NORMAL =
+          "M0,218 L0,24 C0,11 11,0 24,0 L62,0 C75,0 86,11 86,24 L86,218 Z";
+        const P_PANIC =
+          "M0,218 L0,38 C0,26 6,20 16,14 C28,6 50,-4 66,6 C76,13 86,22 86,34 L86,218 Z";
+
+        const pBody = document.getElementById("pBody");
+        const pBrowL = document.getElementById("pBrowL");
+        const pBrowR = document.getElementById("pBrowR");
+        const pMouth = document.getElementById("pMouth");
+        const oBrowL = document.getElementById("oBrowL");
+        const oBrowR = document.getElementById("oBrowR");
+        const oMouth = document.getElementById("oMouth");
+        const bMouth = document.getElementById("bMouth");
+        const yAnt = document.getElementById("yAntenna");
+        const allEyes = Array.from(document.querySelectorAll(".eyedot"));
+
+        let state = "idle",
+          pwVisible = false,
+          hopTimer = 0;
+
+        const captions = {
+          idle: "Four little shapes, minding their own business.",
+          typing: "They're watching you type.",
+          panic: "Don't look! It's a secret.",
+          reveal: "Oh — okay, that was fine.",
+          hop: "Go get em!",
+        };
+
+        const creatures = [
+          {
+            id: "orange",
+            rig: document.getElementById("orangeRig"),
+            fl: { spd: 1 / 3.9, ph: 0.4, amp: 3.5 },
+            s: {
+              idle: { y: 0, x: 0, r: 0, sy: 1, sc: 1 },
+              typing: { y: 0, x: 0, r: 3, sy: 1, sc: 1 },
+              panic: { y: 0, x: 0, r: -3, sy: 0.92, sc: 1 },
+              reveal: { y: -3, x: 0, r: 0, sy: 1.04, sc: 1 },
+              hop: { y: -13, x: 0, r: 2, sy: 1, sc: 1.04 },
+            },
+          },
+          {
+            id: "purple",
+            rig: document.getElementById("purpleRig"),
+            fl: { spd: 1 / 4.5, ph: 0.0, amp: 4 },
+            s: {
+              idle: { y: 0, x: 0, r: 0, sy: 1, sc: 1 },
+              typing: { y: 0, x: 0, r: 4, sy: 1, sc: 1 },
+              panic: { y: 0, x: -4, r: -3, sy: 0.88, sc: 1 },
+              reveal: { y: -8, x: 0, r: 0, sy: 1.08, sc: 1 },
+              hop: { y: -20, x: 0, r: 0, sy: 1, sc: 1 },
+            },
+          },
+          {
+            id: "black",
+            rig: document.getElementById("blackRig"),
+            fl: { spd: 1 / 5.1, ph: 1.1, amp: 3.5 },
+            s: {
+              idle: { y: 0, x: 0, r: 0, sy: 1, sc: 1 },
+              typing: { y: 0, x: 0, r: 4, sy: 1, sc: 1 },
+              panic: { y: 0, x: 2, r: 0, sy: 0.13, sc: 1 },
+              reveal: { y: -6, x: 0, r: 0, sy: 1.05, sc: 1 },
+              hop: { y: -17, x: 0, r: 0, sy: 1, sc: 1 },
+            },
+          },
+          {
+            id: "yellow",
+            rig: document.getElementById("yellowRig"),
+            fl: { spd: 1 / 4.7, ph: 1.7, amp: 4 },
+            s: {
+              idle: { y: 0, x: 0, r: 0, sy: 1, sc: 1 },
+              typing: { y: 0, x: 0, r: -5, sy: 1, sc: 1 },
+              panic: { y: 0, x: 0, r: 5, sy: 0.94, sc: 1 },
+              reveal: { y: -4, x: 0, r: 0, sy: 1.06, sc: 1 },
+              hop: { y: -19, x: 0, r: -2, sy: 1, sc: 1 },
+            },
+          },
+        ];
+
+        const cur = {};
+        creatures.forEach((c) => {
+          cur[c.id] = { y: 0, x: 0, r: 0, sy: 1, sc: 1 };
+        });
+
+        function lerp(a, b, t) {
+          return a + (b - a) * t;
+        }
+        function clamp(v, lo, hi) {
+          return Math.max(lo, Math.min(hi, v));
+        }
+
+        function tick() {
+          const t = performance.now() / 1000;
+          const isPanic = state === "panic";
+          const isTyping = state === "typing";
+          const isHop = state === "hop";
+          if (isHop) hopTimer += 1 / 60;
+
+          creatures.forEach((c, i) => {
+            const tgt = c.s[state] || c.s.idle;
+            const floatAmp = isTyping ? 0.4 : isPanic ? 0 : 1;
+            const fy =
+              Math.sin((t + c.fl.ph) * Math.PI * 2 * c.fl.spd) *
+              c.fl.amp *
+              floatAmp;
+
+            let ty = tgt.y + (isHop ? 0 : fy);
+            if (isHop) {
+              const d = i * 0.07;
+              const el = Math.max(0, hopTimer - d);
+              ty = Math.min(0, Math.sin(el * Math.PI * 3.2) * -22);
+            }
+
+            const spd = isPanic ? 0.3 : isTyping ? 0.16 : 0.12;
+            const cv = cur[c.id];
+            cv.y = lerp(cv.y, ty, spd);
+            cv.x = lerp(cv.x, tgt.x, spd);
+            cv.r = lerp(cv.r, tgt.r, spd);
+            cv.sc = lerp(cv.sc, tgt.sc, spd);
+            cv.sy = lerp(cv.sy, tgt.sy, spd);
+
+            c.rig.style.transform =
+              `translate(${cv.x.toFixed(2)}px,${cv.y.toFixed(2)}px) ` +
+              `rotate(${cv.r.toFixed(2)}deg) ` +
+              `scale(${cv.sc.toFixed(3)},${(cv.sy * cv.sc).toFixed(3)})`;
+          });
+          requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+
+        function updateEyes(cx, cy) {
+          if (state === "panic") return;
+          const rect = canvas.getBoundingClientRect();
+          const dx = clamp(
+            ((cx - rect.left - rect.width * 0.44) / (rect.width / 2)) * 5,
+            -5,
+            5,
+          );
+          const dy = clamp(
+            ((cy - rect.top - rect.height * 0.46) / (rect.height / 2)) * 5,
+            -5,
+            5,
+          );
+          allEyes.forEach((p) => {
+            p.style.transform = `translate(${dx}px,${dy}px)`;
+          });
+        }
+        document.addEventListener("mousemove", (e) =>
+          updateEyes(e.clientX, e.clientY),
+        );
+
+        function setCaption(s) {
+          caption.style.opacity = 0;
+          setTimeout(() => {
+            caption.textContent = captions[s] || captions.idle;
+            caption.style.opacity = 1;
+          }, 120);
+        }
+
+        function applyFace(s) {
+          const worried = s === "panic";
+
+          pBody.setAttribute("d", worried ? P_PANIC : P_NORMAL);
+          pBrowL.setAttribute("opacity", worried ? "1" : "0");
+          pBrowR.setAttribute("opacity", worried ? "1" : "0");
+          pMouth.setAttribute("d", worried ? PM_WORRIED : PM_NEUTRAL);
+
+          oBrowL.setAttribute("opacity", worried ? "1" : "0");
+          oBrowR.setAttribute("opacity", worried ? "1" : "0");
+
+          bMouth.setAttribute("opacity", worried ? "1" : "0");
+          bMouth.setAttribute("d", worried ? BM_WORRIED : BM_NEUTRAL);
+
+          if (worried) oMouth.setAttribute("d", O_WORRIED);
+          else if (s === "typing") oMouth.setAttribute("d", O_NEUTRAL);
+          else oMouth.setAttribute("d", O_SMILE);
+
+          const ya = worried ? YA_W : YA_N;
+          yAnt.setAttribute("x1", ya.x1);
+          yAnt.setAttribute("y1", ya.y1);
+          yAnt.setAttribute("x2", ya.x2);
+          yAnt.setAttribute("y2", ya.y2);
+        }
+
+        function setState(s) {
+          if (state === s) return;
+          if (s === "hop") hopTimer = 0;
+          state = s;
+          applyFace(s);
+          setCaption(s);
+          if (s !== "panic")
+            allEyes.forEach((p) => {
+              p.style.transform = "";
+            });
+        }
+
+        emailEl.addEventListener("focus", () => setState("typing"));
+        emailEl.addEventListener("input", () => setState("typing"));
+        emailEl.addEventListener("blur", () => setState("idle"));
+
+        passEl.addEventListener("focus", () =>
+          setState(pwVisible ? "reveal" : "panic"),
+        );
+        passEl.addEventListener("blur", () => setState("idle"));
+
+        eyeToggle.addEventListener("click", () => {
+          pwVisible = !pwVisible;
+          passEl.type = pwVisible ? "text" : "password";
+          eyeShow.style.display = pwVisible ? "none" : "block";
+          eyeHide.style.display = pwVisible ? "block" : "none";
+          eyeToggle.setAttribute(
+            "aria-label",
+            pwVisible ? "Hide password" : "Show password",
+          );
+          setState(pwVisible ? "reveal" : "panic");
+          passEl.focus();
+        });
+
+        [loginBtn, googleBtn].forEach((btn) => {
+          btn.addEventListener("mouseenter", () => setState("hop"));
+          btn.addEventListener("mouseleave", () => setState("idle"));
+        });
+
+        // Redirect function to handle post-login animation and transition
+        function handleSuccessfulLogin() {
+          setState("hop");
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 600);
+        }
+
+        loginForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          handleSuccessfulLogin();
+        });
+
+        googleBtn.addEventListener("click", () => {
+          handleSuccessfulLogin();
+        });
+
+        document.querySelectorAll(".creature").forEach((el) => {
+          el.addEventListener("animationend", (e) => {
+            const names = [
+              "enter-black",
+              "enter-purple",
+              "enter-yellow",
+              "enter-orange",
+            ];
+            if (names.includes(e.animationName)) el.classList.remove("enter");
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
