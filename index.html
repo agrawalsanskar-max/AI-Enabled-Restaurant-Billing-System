@@ -3,97 +3,258 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI-Enabled Restaurant Billing System</title>
+
+    <meta
+      name="description"
+      content="AI-Enabled Restaurant Billing System with smart recommendations, AI assistance and restaurant insights."
+    />
+
+    <title>Spice Route | AI Restaurant Billing</title>
+
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
-    <!-- NAVBAR -->
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
     <nav class="navbar">
       <div class="nav-container">
-        <div class="brand">
-          🍽️ <span>Spice&nbsp;Route</span> <small>AI Billing</small>
-        </div>
-        <button class="nav-toggle" id="navToggle">☰</button>
+        <a href="#" class="brand">
+          <span class="brand-icon">🍽️</span>
+
+          <span class="brand-name">
+            Spice Route
+            <small>AI BILLING</small>
+          </span>
+        </a>
+
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+        >
+          ☰
+        </button>
+
         <ul class="nav-links" id="navLinks">
           <li><a href="#menu">Menu</a></li>
-          <li><a href="#cart">Cart</a></li>
           <li><a href="#recommend">AI Picks</a></li>
+          <li><a href="#cart">Cart</a></li>
           <li><a href="#assistant">AI Assistant</a></li>
           <li><a href="#insights">Insights</a></li>
         </ul>
       </div>
     </nav>
 
-    <!-- HERO -->
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
     <header class="hero">
+      <div class="hero-glow hero-glow-one"></div>
+      <div class="hero-glow hero-glow-two"></div>
+
       <div class="hero-content">
-        <h1>AI-Enabled Restaurant Billing System</h1>
+        <div class="hero-badge">
+          <span class="status-dot"></span>
+          AI-POWERED DINING EXPERIENCE
+        </div>
+
+        <h1>
+          Smarter Dining.
+          <span>Intelligent Billing.</span>
+        </h1>
+
         <p>
-          Traditional billing, reimagined with intelligent recommendations, a
-          smart assistant and live insights.
+          Experience a modern restaurant billing system powered by intelligent
+          recommendations, conversational AI and data-driven restaurant
+          insights.
         </p>
-        <div class="hero-badges">
-          <span class="badge">🤖 Smart Recommendations</span>
-          <span class="badge">💬 AI Assistant</span>
-          <span class="badge">📊 Live Insights</span>
+
+        <div class="hero-buttons">
+          <button
+            type="button"
+            onclick="document.getElementById('recommend').scrollIntoView({ behavior: 'smooth' })"
+          >
+            <span>🤖</span>
+            Smart Recommendations
+          </button>
+
+          <button
+            type="button"
+            onclick="document.getElementById('assistant').scrollIntoView({ behavior: 'smooth' })"
+          >
+            <span>💬</span>
+            AI Assistant
+          </button>
+
+          <button
+            type="button"
+            onclick="document.getElementById('insights').scrollIntoView({ behavior: 'smooth' })"
+          >
+            <span>📊</span>
+            Live Insights
+          </button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>Smart</strong>
+            <span>Recommendations</span>
+          </div>
+
+          <div class="hero-stat">
+            <strong>Instant</strong>
+            <span>Billing System</span>
+          </div>
+
+          <div class="hero-stat">
+            <strong>AI</strong>
+            <span>Restaurant Insights</span>
+          </div>
         </div>
       </div>
     </header>
 
+    <!-- =====================================================
+         MAIN APPLICATION
+         ===================================================== -->
     <main class="container">
-      <!-- MENU SECTION -->
-      <section id="menu" class="section">
+      <!-- ===================================================
+           MENU SECTION
+           =================================================== -->
+      <section id="menu" class="section menu-section">
         <div class="section-heading">
-          <h2>📋 Our Menu</h2>
-          <p>Browse, search and add your favourite dishes to the cart</p>
+          <span class="section-badge">DIGITAL MENU</span>
+
+          <h2>📋 Explore Our Menu</h2>
+
+          <p>
+            Browse delicious dishes, discover your favourites and build your
+            perfect meal.
+          </p>
         </div>
 
         <div class="menu-controls">
           <div class="search-box">
             <span>🔍</span>
+
             <input
               type="text"
               id="searchInput"
-              placeholder="Search for dishes..."
+              placeholder="Search for your favourite dish..."
+              aria-label="Search menu"
             />
           </div>
+
           <div class="category-filters" id="categoryFilters"></div>
         </div>
 
         <div class="menu-grid" id="menuGrid"></div>
       </section>
 
-      <!-- AI RECOMMENDATION SECTION -->
-      <section id="recommend" class="section">
+      <!-- ===================================================
+           AI RECOMMENDATIONS SECTION
+           =================================================== -->
+      <section id="recommend" class="section recommend-section">
         <div class="section-heading">
+          <span class="section-badge purple-badge">
+            ✨ AI PERSONALIZATION ENGINE
+          </span>
+
           <h2>🤖 Smart Recommendations</h2>
-          <p>AI-powered suggestions based on what's in your cart</p>
+
+          <p>
+            Personalized suggestions based on your current order, popular
+            combinations and intelligent dining patterns.
+          </p>
         </div>
+
+        <!-- AI ENGINE INFORMATION -->
+        <div class="ai-recommend-intro">
+          <div class="ai-intro-icon">🧠</div>
+
+          <div class="ai-intro-content">
+            <span>SPICE ROUTE AI ENGINE</span>
+
+            <h3>Your Order Is Being Analysed</h3>
+
+            <p>
+              Our recommendation engine looks at your cart and suggests items
+              that can create a more complete and enjoyable dining experience.
+            </p>
+          </div>
+
+          <div class="ai-status">
+            <span class="ai-status-dot"></span>
+            Active
+          </div>
+        </div>
+
+        <!-- RECOMMENDATION TYPES -->
+        <div class="recommendation-labels">
+          <span>🍽️ Perfect Pairing</span>
+          <span>🔥 Customer Favourite</span>
+          <span>✨ Complete Your Meal</span>
+          <span>💰 Value Recommendation</span>
+        </div>
+
+        <!-- DYNAMIC AI RECOMMENDATIONS -->
         <div class="recommend-grid" id="recommendGrid"></div>
       </section>
 
-      <!-- CART + BILL SECTION -->
-      <section id="cart" class="section">
+      <!-- ===================================================
+           CART & BILLING SECTION
+           =================================================== -->
+      <section id="cart" class="section cart-section">
         <div class="section-heading">
-          <h2>🛒 Your Cart</h2>
-          <p>Review items, apply discount and generate your bill</p>
+          <span class="section-badge green-badge">ORDER MANAGEMENT</span>
+
+          <h2>🛒 Your Order & Billing</h2>
+
+          <p>
+            Manage your selected items, apply intelligent discounts and
+            generate a professional restaurant bill.
+          </p>
         </div>
 
         <div class="cart-layout">
-          <div class="cart-items-wrap">
-            <div id="cartItems" class="cart-items">
-              <p class="empty-msg" id="emptyCartMsg">
-                Your cart is empty. Add some delicious items from the menu!
-              </p>
+          <!-- CART ITEMS -->
+          <div class="cart-panel">
+            <div class="cart-panel-header">
+              <div>
+                <span class="panel-label">CURRENT ORDER</span>
+                <h3>Your Selected Items</h3>
+              </div>
+
+              <span class="cart-live-badge">LIVE</span>
+            </div>
+
+            <div class="cart-items-wrap">
+              <div id="cartItems" class="cart-items">
+                <p class="empty-msg" id="emptyCartMsg">
+                  <span class="empty-icon">🍽️</span>
+                  Your cart is currently empty.
+                  <small>
+                    Start by exploring our menu and adding your favourite
+                    dishes.
+                  </small>
+                </p>
+              </div>
             </div>
           </div>
 
-          <!-- ENHANCED CART SUMMARY SECTION -->
+          <!-- BILL SUMMARY -->
           <div class="bill-summary">
-            <h3>Bill Summary</h3>
+            <div class="bill-summary-header">
+              <span class="panel-label">PAYMENT SUMMARY</span>
+              <h3>Bill Details</h3>
+            </div>
 
             <div class="form-group">
               <label for="customerName">Customer Name</label>
+
               <input
                 type="text"
                 id="customerName"
@@ -102,7 +263,8 @@
             </div>
 
             <div class="form-group">
-              <label for="tableNumber">Table No. / Order Type</label>
+              <label for="tableNumber">Table / Order Type</label>
+
               <select id="tableNumber">
                 <option value="Table 1">Table 1</option>
                 <option value="Table 2">Table 2</option>
@@ -112,7 +274,8 @@
 
             <div class="form-group">
               <label for="discountInput">Discount (%)</label>
-              <div class="discount-wrapper" style="display: flex; gap: 8px">
+
+              <div class="discount-wrapper">
                 <input
                   type="number"
                   id="discountInput"
@@ -120,140 +283,308 @@
                   max="100"
                   value="0"
                 />
+
                 <button
                   class="btn-secondary"
                   id="aiDiscountBtn"
                   type="button"
                   title="Apply AI Smart Discount"
                 >
-                  ⚡ Auto AI
+                  ⚡ AI Suggest
                 </button>
               </div>
             </div>
+
+            <div class="bill-divider"></div>
 
             <div class="summary-row">
               <span>Subtotal</span>
               <span id="subtotalVal">₹0.00</span>
             </div>
+
             <div class="summary-row">
-              <span>Tax (5%)</span>
+              <span>GST / Tax (5%)</span>
               <span id="taxVal">₹0.00</span>
             </div>
+
             <div class="summary-row">
               <span>Discount</span>
               <span id="discountVal">- ₹0.00</span>
             </div>
+
             <div class="summary-row total-row">
               <span>Grand Total</span>
               <span id="grandTotalVal">₹0.00</span>
             </div>
 
             <button class="btn-primary" id="confirmOrderBtn">
-              ✅ Confirm Order &amp; Generate Bill
+              <span>✓</span>
+              Confirm Order & Generate Bill
             </button>
+
             <button class="btn-secondary" id="clearCartBtn">
-              🗑️ Clear Cart
+              🗑️ Clear Current Order
             </button>
           </div>
         </div>
       </section>
 
-      <!-- AI ASSISTANT SECTION -->
-      <section id="assistant" class="section">
+      <!-- ===================================================
+           AI ASSISTANT SECTION
+           =================================================== -->
+      <section id="assistant" class="section assistant-section">
         <div class="section-heading">
+          <span class="section-badge purple-badge">
+            CONVERSATIONAL AI
+          </span>
+
           <h2>💬 AI Restaurant Assistant</h2>
-          <p>Ask about dishes, prices, veg options, spice levels and more</p>
+
+          <p>
+            Your intelligent dining companion for menu questions, food
+            recommendations and personalised suggestions.
+          </p>
         </div>
 
-        <div class="chat-window">
-          <div class="chat-messages" id="chatMessages">
-            <div class="chat-msg bot">
-              👋 Hi! I'm your AI dining assistant. Ask me things like "recommend
-              vegetarian food", "suggest a meal under ₹500", or "what desserts
-              do you have?"
+        <div class="assistant-layout">
+          <div class="assistant-info">
+            <div class="assistant-orb">🤖</div>
+
+            <span class="panel-label">AVAILABLE 24/7</span>
+
+            <h3>Ask. Discover. Enjoy.</h3>
+
+            <p>
+              Get instant answers about dishes, prices, vegetarian options,
+              spicy food and personalised meal recommendations.
+            </p>
+
+            <ul class="assistant-features">
+              <li>✓ Menu Recommendations</li>
+              <li>✓ Budget-Based Suggestions</li>
+              <li>✓ Dietary Preferences</li>
+              <li>✓ Voice Input Support</li>
+            </ul>
+          </div>
+
+          <!-- CHAT WINDOW -->
+          <div class="chat-window">
+            <div class="chat-header">
+              <div class="chat-bot-avatar">🤖</div>
+
+              <div>
+                <h3>Spice Route AI</h3>
+                <span>
+                  <i></i>
+                  Online & Ready to Help
+                </span>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+              <div class="chat-msg bot">
+                👋 Hi! I'm your AI dining assistant. Ask me things like
+                "recommend vegetarian food", "suggest a meal under ₹500", or
+                "what desserts do you have?"
+              </div>
+            </div>
+
+            <div class="chat-quick">
+              <button
+                class="quick-chip"
+                data-q="Recommend vegetarian food"
+              >
+                🥗 Vegetarian food
+              </button>
+
+              <button
+                class="quick-chip"
+                data-q="What are your popular dishes?"
+              >
+                🔥 Popular dishes
+              </button>
+
+              <button
+                class="quick-chip"
+                data-q="Suggest a meal under ₹500"
+              >
+                💰 Meal under ₹500
+              </button>
+
+              <button
+                class="quick-chip"
+                data-q="Recommend something spicy"
+              >
+                🌶️ Something spicy
+              </button>
+            </div>
+
+            <div class="chat-input-row">
+              <input
+                type="text"
+                id="chatInput"
+                placeholder="Ask Spice Route AI anything..."
+              />
+
+              <button
+                id="voiceInputBtn"
+                type="button"
+                title="Voice Input"
+                aria-label="Use voice input"
+              >
+                🎙️
+              </button>
+
+              <button id="chatSendBtn" type="button">
+                Send
+                <span>➤</span>
+              </button>
             </div>
           </div>
-          <div class="chat-quick">
-            <button class="quick-chip" data-q="Recommend vegetarian food">
-              Vegetarian food
-            </button>
-            <button class="quick-chip" data-q="What are your popular dishes?">
-              Popular dishes
-            </button>
-            <button class="quick-chip" data-q="Suggest a meal under ₹500">
-              Meal under ₹500
-            </button>
-            <button class="quick-chip" data-q="Recommend something spicy">
-              Something spicy
-            </button>
-          </div>
-          <div class="chat-input-row">
-            <input
-              type="text"
-              id="chatInput"
-              placeholder="Type your question..."
-            />
-            <button id="voiceInputBtn" type="button" title="Voice Input">
-              🎙️
-            </button>
-            <button id="chatSendBtn">Send ➤</button>
-          </div>
         </div>
       </section>
 
-      <!-- INSIGHTS SECTION -->
-      <section id="insights" class="section">
+      <!-- ===================================================
+           INSIGHTS SECTION
+           =================================================== -->
+      <section id="insights" class="section insights-section">
         <div class="section-heading">
+          <span class="section-badge orange-badge">
+            BUSINESS INTELLIGENCE
+          </span>
+
           <h2>📊 Intelligent Restaurant Insights</h2>
-          <p>AI-style analysis of restaurant performance</p>
+
+          <p>
+            AI-style analytics to understand customer preferences, ordering
+            behaviour and potential business opportunities.
+          </p>
+        </div>
+
+        <div class="insights-overview">
+          <div class="overview-stat">
+            <span class="overview-icon">📈</span>
+            <div>
+              <strong>142</strong>
+              <span>Top Dish Orders</span>
+            </div>
+          </div>
+
+          <div class="overview-stat">
+            <span class="overview-icon">🔥</span>
+            <div>
+              <strong>98%</strong>
+              <span>Peak Dinner Activity</span>
+            </div>
+          </div>
+
+          <div class="overview-stat">
+            <span class="overview-icon">🤝</span>
+            <div>
+              <strong>84%</strong>
+              <span>Top Combo Match</span>
+            </div>
+          </div>
+
+          <div class="overview-stat">
+            <span class="overview-icon">💡</span>
+            <div>
+              <strong>2</strong>
+              <span>Suggested Promotions</span>
+            </div>
+          </div>
         </div>
 
         <div class="insights-grid">
           <div class="insight-card">
-            <h3>🔥 Most Popular Dishes</h3>
+            <div class="insight-card-title">
+              <span>🔥</span>
+              <h3>Most Popular Dishes</h3>
+            </div>
+
             <div id="popularChart" class="bar-chart"></div>
           </div>
 
           <div class="insight-card">
-            <h3>🔗 Frequently Ordered Together</h3>
+            <div class="insight-card-title">
+              <span>🔗</span>
+              <h3>Frequently Ordered Together</h3>
+            </div>
+
             <ul id="comboList" class="insight-list"></ul>
           </div>
 
           <div class="insight-card">
-            <h3>⏰ Peak Order Periods</h3>
+            <div class="insight-card-title">
+              <span>⏰</span>
+              <h3>Peak Order Periods</h3>
+            </div>
+
             <div id="peakChart" class="bar-chart"></div>
           </div>
 
           <div class="insight-card">
-            <h3>📉 Low-Performing Items</h3>
+            <div class="insight-card-title">
+              <span>📉</span>
+              <h3>Low-Performing Items</h3>
+            </div>
+
             <ul id="lowList" class="insight-list"></ul>
           </div>
 
           <div class="insight-card wide">
-            <h3>💡 Suggested Promotions</h3>
+            <div class="insight-card-title">
+              <span>💡</span>
+              <h3>AI Suggested Promotions</h3>
+            </div>
+
             <ul id="promoList" class="insight-list promo"></ul>
           </div>
         </div>
       </section>
     </main>
 
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
     <footer class="footer">
+      <div class="footer-brand">🍽️ Spice Route</div>
+
       <p>
-        Built for the AI Transformation Challenge · AI-Enabled Restaurant
-        Billing System
+        Built for the AI Transformation Challenge ·
+        AI-Enabled Restaurant Billing System
       </p>
+
+      <small>
+        Combining intelligent recommendations, conversational AI and business
+        analytics.
+      </small>
     </footer>
 
-    <!-- BILL / RECEIPT MODAL -->
+    <!-- =====================================================
+         BILL / RECEIPT MODAL
+         ===================================================== -->
     <div class="modal-overlay" id="billModalOverlay">
       <div class="modal bill-modal">
-        <button class="modal-close" id="closeBillModal">✕</button>
+        <button
+          class="modal-close"
+          id="closeBillModal"
+          type="button"
+          aria-label="Close bill"
+        >
+          ✕
+        </button>
+
         <div id="billContent"></div>
+
         <div class="bill-actions">
-          <button class="btn-primary" onclick="window.print()">
+          <button class="btn-primary" type="button" onclick="window.print()">
             🖨️ Print Bill
           </button>
-          <button class="btn-secondary" id="newOrderBtn">🆕 New Order</button>
+
+          <button class="btn-secondary" id="newOrderBtn" type="button">
+            🆕 New Order
+          </button>
         </div>
       </div>
     </div>

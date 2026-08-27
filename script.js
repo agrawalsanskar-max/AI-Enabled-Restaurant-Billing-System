@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   /* ==========================================================================
-     1. STATE & MOCK DATA
+     1. MENU DATA & APPLICATION STATE
      ========================================================================== */
+
   const menuData = [
     {
       id: "m1",
@@ -102,22 +103,50 @@ document.addEventListener("DOMContentLoaded", () => {
       { name: "Paneer Tikka", count: 98, max: 150 },
       { name: "Gulab Jamun", count: 75, max: 150 },
     ],
+
     frequentCombos: [
-      { pair: "Butter Chicken + Garlic Naan", percentage: "84% orders" },
-      { pair: "Paneer Tikka + Jeera Rice", percentage: "62% orders" },
-      { pair: "Chicken 65 + Cold Beverages", percentage: "45% orders" },
+      {
+        pair: "Butter Chicken + Garlic Naan",
+        percentage: "84% of orders",
+      },
+      {
+        pair: "Paneer Tikka + Jeera Rice",
+        percentage: "62% of orders",
+      },
+      {
+        pair: "Chicken 65 + Cold Beverages",
+        percentage: "45% of orders",
+      },
     ],
+
     peakHours: [
-      { time: "1:00 PM - 3:00 PM (Lunch)", volume: 85, max: 100 },
-      { time: "8:00 PM - 10:30 PM (Dinner)", volume: 98, max: 100 },
+      {
+        time: "1:00 PM - 3:00 PM (Lunch)",
+        volume: 85,
+        max: 100,
+      },
+      {
+        time: "8:00 PM - 10:30 PM (Dinner)",
+        volume: 98,
+        max: 100,
+      },
     ],
+
     lowPerforming: [
-      { name: "Veg Spring Rolls", text: "Low order rate on weekdays" },
-      { name: "Masala Chai", text: "Ordered mostly in evening slots" },
+      {
+        name: "Veg Spring Rolls",
+        text: "Low order rate on weekdays",
+      },
+      {
+        name: "Masala Chai",
+        text: "Mostly ordered during evening hours",
+      },
     ],
+
     promotions: [
-      "Bundle **Butter Chicken + 2 Garlic Naans** for a 10% combo discount.",
-      "Offer free **Mango Lassi** on orders above ₹800 during lunch hours.",
+      "Bundle Butter Chicken + 2 Garlic Naans for a 10% combo discount.",
+      "Offer a complimentary Mango Lassi on orders above ₹800 during lunch hours.",
+      "Create a dessert upgrade offer for customers ordering a complete meal.",
     ],
   };
 
@@ -129,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ==========================================================================
      2. DOM ELEMENTS
      ========================================================================== */
+
   const navToggle = document.getElementById("navToggle");
   const navLinks = document.getElementById("navLinks");
 
@@ -140,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const cartItemsContainer = document.getElementById("cartItems");
   const emptyCartMsg = document.getElementById("emptyCartMsg");
+
   const customerNameInput = document.getElementById("customerName");
   const tableNumberSelect = document.getElementById("tableNumber");
   const discountInput = document.getElementById("discountInput");
@@ -174,72 +205,113 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ==========================================================================
      3. UTILITY FUNCTIONS
      ========================================================================== */
+
+  function formatCurrency(amount) {
+    return `₹${Number(amount).toFixed(2)}`;
+  }
+
   function showToast(message) {
     toast.textContent = message;
     toast.classList.add("show");
-    setTimeout(() => {
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(() => {
       toast.classList.remove("show");
     }, 3000);
   }
 
-  function formatCurrency(num) {
-    return `₹${num.toFixed(2)}`;
-  }
-
   /* ==========================================================================
-     4. RENDER MENU & FILTERS
+     4. MENU FILTERS & RENDERING
      ========================================================================== */
+
   function initCategories() {
-    const categories = ["All", ...new Set(menuData.map((item) => item.category))];
+    const categories = [
+      "All",
+      ...new Set(menuData.map((item) => item.category)),
+    ];
+
     categoryFilters.innerHTML = "";
 
-    categories.forEach((cat) => {
-      const btn = document.createElement("button");
-      btn.className = `filter-chip ${cat === currentCategory ? "active" : ""}`;
-      btn.textContent = cat;
-      btn.addEventListener("click", () => {
-        currentCategory = cat;
-        document
-          .querySelectorAll(".filter-chip")
-          .forEach((c) => c.classList.remove("active"));
-        btn.classList.add("active");
+    categories.forEach((category) => {
+      const button = document.createElement("button");
+
+      button.className = `filter-chip ${
+        category === currentCategory ? "active" : ""
+      }`;
+
+      button.textContent = category;
+
+      button.addEventListener("click", () => {
+        currentCategory = category;
+
+        document.querySelectorAll(".filter-chip").forEach((chip) => {
+          chip.classList.remove("active");
+        });
+
+        button.classList.add("active");
         renderMenu();
       });
-      categoryFilters.appendChild(btn);
+
+      categoryFilters.appendChild(button);
     });
   }
 
   function renderMenu() {
     menuGrid.innerHTML = "";
 
-    const filtered = menuData.filter((item) => {
+    const filteredItems = menuData.filter((item) => {
       const matchesCategory =
         currentCategory === "All" || item.category === currentCategory;
+
       const matchesSearch = item.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
+
       return matchesCategory && matchesSearch;
     });
 
-    if (filtered.length === 0) {
-      menuGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-light); padding: 20px;">No dishes match your criteria.</p>`;
+    if (filteredItems.length === 0) {
+      menuGrid.innerHTML = `
+        <div class="empty-state">
+          <div style="font-size: 2.5rem;">🔍</div>
+          <h3>No dishes found</h3>
+          <p>Try searching for something else.</p>
+        </div>
+      `;
       return;
     }
 
-    filtered.forEach((item) => {
+    filteredItems.forEach((item) => {
       const card = document.createElement("div");
+
       card.className = "menu-card";
+
       card.innerHTML = `
         <div class="tags">
-          <span class="tag ${item.isVeg ? "veg" : "nonveg"}">${item.isVeg ? "VEG" : "NON-VEG"}</span>
+          <span class="tag ${item.isVeg ? "veg" : "nonveg"}">
+            ${item.isVeg ? "VEG" : "NON-VEG"}
+          </span>
+
           ${item.isSpicy ? '<span class="tag spicy">SPICY</span>' : ""}
           ${item.isPopular ? '<span class="tag popular">POPULAR</span>' : ""}
         </div>
+
         <div class="icon">${item.icon}</div>
+
         <h4>${item.name}</h4>
-        <div class="category-label">${item.category}</div>
-        <div class="price">${formatCurrency(item.price)}</div>
-        <button class="add-btn">Add to Cart +</button>
+
+        <div class="category-label">
+          ${item.category}
+        </div>
+
+        <div class="price">
+          ${formatCurrency(item.price)}
+        </div>
+
+        <button class="add-btn">
+          Add to Order +
+        </button>
       `;
 
       card.querySelector(".add-btn").addEventListener("click", () => {
@@ -251,71 +323,95 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ==========================================================================
-     5. CART OPERATIONS & COMPUTATION
+     5. CART OPERATIONS
      ========================================================================== */
-  function addToCart(itemId) {
-    const existing = cart.find((i) => i.id === itemId);
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      const item = menuData.find((m) => m.id === itemId);
-      cart.push({ ...item, quantity: 1 });
-    }
-    updateCartUI();
-    showToast("Added item to cart");
-  }
 
-  function updateQuantity(itemId, delta) {
-    const index = cart.findIndex((i) => i.id === itemId);
-    if (index > -1) {
-      cart[index].quantity += delta;
-      if (cart[index].quantity <= 0) {
-        cart.splice(index, 1);
+  function addToCart(itemId) {
+    const existingItem = cart.find((item) => item.id === itemId);
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      const menuItem = menuData.find((item) => item.id === itemId);
+
+      if (menuItem) {
+        cart.push({
+          ...menuItem,
+          quantity: 1,
+        });
       }
     }
+
+    updateCartUI();
+    showToast("Item added to your order ✓");
+  }
+
+  function updateQuantity(itemId, change) {
+    const cartItem = cart.find((item) => item.id === itemId);
+
+    if (!cartItem) return;
+
+    cartItem.quantity += change;
+
+    if (cartItem.quantity <= 0) {
+      cart = cart.filter((item) => item.id !== itemId);
+    }
+
     updateCartUI();
   }
 
   function removeFromCart(itemId) {
-    cart = cart.filter((i) => i.id !== itemId);
+    cart = cart.filter((item) => item.id !== itemId);
     updateCartUI();
+    showToast("Item removed from cart");
   }
 
   function updateCartUI() {
     cartItemsContainer.innerHTML = "";
 
     if (cart.length === 0) {
-      cartItemsContainer.appendChild(emptyCartMsg);
       emptyCartMsg.style.display = "block";
+      cartItemsContainer.appendChild(emptyCartMsg);
     } else {
-      emptyCartMsg.style.display = "none";
       cart.forEach((item) => {
         const row = document.createElement("div");
+
         row.className = "cart-item";
+
         row.innerHTML = `
           <div class="icon">${item.icon}</div>
+
           <div class="info">
             <h4>${item.name}</h4>
-            <span>${formatCurrency(item.price)} each</span>
+            <span>${formatCurrency(item.price)} per item</span>
           </div>
+
           <div class="qty-controls">
-            <button class="btn-qty-minus">-</button>
+            <button class="qty-minus" aria-label="Decrease quantity">−</button>
             <span>${item.quantity}</span>
-            <button class="btn-qty-plus">+</button>
+            <button class="qty-plus" aria-label="Increase quantity">+</button>
           </div>
-          <div class="line-total">${formatCurrency(item.price * item.quantity)}</div>
-          <button class="remove-btn" title="Remove Item">✕</button>
+
+          <div class="line-total">
+            ${formatCurrency(item.price * item.quantity)}
+          </div>
+
+          <button class="remove-btn" title="Remove item">
+            ✕
+          </button>
         `;
 
-        row
-          .querySelector(".btn-qty-minus")
-          .addEventListener("click", () => updateQuantity(item.id, -1));
-        row
-          .querySelector(".btn-qty-plus")
-          .addEventListener("click", () => updateQuantity(item.id, 1));
-        row
-          .querySelector(".remove-btn")
-          .addEventListener("click", () => removeFromCart(item.id));
+        row.querySelector(".qty-minus").addEventListener("click", () => {
+          updateQuantity(item.id, -1);
+        });
+
+        row.querySelector(".qty-plus").addEventListener("click", () => {
+          updateQuantity(item.id, 1);
+        });
+
+        row.querySelector(".remove-btn").addEventListener("click", () => {
+          removeFromCart(item.id);
+        });
 
         cartItemsContainer.appendChild(row);
       });
@@ -326,13 +422,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function calculateTotals() {
-    const subtotal = cart.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0
-    );
+    const subtotal = cart.reduce((total, item) => {
+      return total + item.price * item.quantity;
+    }, 0);
+
     const tax = subtotal * 0.05;
-    const discountPercent = parseFloat(discountInput.value) || 0;
+
+    const discountPercent = Math.min(
+      100,
+      Math.max(0, Number(discountInput.value) || 0)
+    );
+
     const discount = (subtotal * discountPercent) / 100;
+
     const grandTotal = Math.max(0, subtotal + tax - discount);
 
     subtotalVal.textContent = formatCurrency(subtotal);
@@ -340,171 +442,328 @@ document.addEventListener("DOMContentLoaded", () => {
     discountVal.textContent = `- ${formatCurrency(discount)}`;
     grandTotalVal.textContent = formatCurrency(grandTotal);
 
-    return { subtotal, tax, discount, grandTotal, discountPercent };
+    return {
+      subtotal,
+      tax,
+      discount,
+      grandTotal,
+      discountPercent,
+    };
   }
 
   /* ==========================================================================
-     6. AI RECOMMENDATIONS & SMART DISCOUNT
+     6. PROFESSIONAL SMART RECOMMENDATION ENGINE
      ========================================================================== */
+
   function renderRecommendations() {
     recommendGrid.innerHTML = "";
 
-    // Determine recommendations based on cart state
-    const cartIds = cart.map((c) => c.id);
-    let recommendations = [];
+    const cartIds = cart.map((item) => item.id);
+    const recommendations = [];
 
-    const hasMainCourse = cart.some((i) => i.category === "Main Course");
-    const hasBread = cart.some((i) => i.category === "Breads");
-    const hasBeverage = cart.some((i) => i.category === "Beverages");
-    const hasDessert = cart.some((i) => i.category === "Desserts");
+    const hasMainCourse = cart.some(
+      (item) => item.category === "Main Course"
+    );
 
-    if (hasMainCourse && !hasBread) {
-      const naan = menuData.find((m) => m.id === "m3");
-      if (naan) {
+    const hasStarter = cart.some(
+      (item) => item.category === "Starters"
+    );
+
+    const hasBread = cart.some(
+      (item) => item.category === "Breads"
+    );
+
+    const hasBeverage = cart.some(
+      (item) => item.category === "Beverages"
+    );
+
+    const hasDessert = cart.some(
+      (item) => item.category === "Desserts"
+    );
+
+    const cartIsVegetarian =
+      cart.length > 0 && cart.every((item) => item.isVeg);
+
+    // PERFECT PAIR
+    if (hasMainCourse && !hasBread && !cartIds.includes("m3")) {
+      const item = menuData.find((dish) => dish.id === "m3");
+
+      if (item) {
         recommendations.push({
-          item: naan,
-          reason: "Pairs perfectly with your Main Course!",
+          item,
+          type: "Perfect Pair",
+          score: 98,
+          reason:
+            "Our ordering pattern shows that this bread is frequently paired with your selected main course.",
         });
       }
     }
-    if (cart.length > 0 && !hasBeverage) {
-      const lassi = menuData.find((m) => m.id === "m8");
-      if (lassi) {
+
+    // COMPLETE THE MEAL
+    if (cart.length > 0 && !hasBeverage && !cartIds.includes("m8")) {
+      const item = menuData.find((dish) => dish.id === "m8");
+
+      if (item) {
         recommendations.push({
-          item: lassi,
-          reason: "Refreshing drink to complete your meal.",
-        });
-      }
-    }
-    if (cart.length > 0 && !hasDessert) {
-      const dessert = menuData.find((m) => m.id === "m7");
-      if (dessert) {
-        recommendations.push({
-          item: dessert,
-          reason: "Treat yourself with something sweet!",
+          item,
+          type: "Complete Your Meal",
+          score: 92,
+          reason:
+            "A refreshing beverage can create a more balanced dining experience.",
         });
       }
     }
 
-    // Default suggestions if cart is empty or no specific rules matched
-    if (recommendations.length === 0) {
-      const populars = menuData.filter(
-        (m) => m.isPopular && !cartIds.includes(m.id)
-      );
-      populars.slice(0, 3).forEach((pop) => {
+    // DESSERT UPSELL
+    if (
+      cart.length >= 2 &&
+      !hasDessert &&
+      !cartIds.includes("m7")
+    ) {
+      const item = menuData.find((dish) => dish.id === "m7");
+
+      if (item) {
         recommendations.push({
-          item: pop,
-          reason: "Customer favorite! Frequently ordered.",
+          item,
+          type: "Finish on a Sweet Note",
+          score: 88,
+          reason:
+            "Customers with similar meal combinations frequently add a dessert.",
+        });
+      }
+    }
+
+    // STARTER SUGGESTION
+    if (
+      hasMainCourse &&
+      !hasStarter &&
+      !cartIds.includes("m5")
+    ) {
+      const item = menuData.find((dish) => dish.id === "m5");
+
+      if (item) {
+        recommendations.push({
+          item,
+          type: "Starter Suggestion",
+          score: 82,
+          reason:
+            "Add a light starter to make your meal more complete.",
+        });
+      }
+    }
+
+    // CUSTOMER FAVORITE FALLBACK
+    if (recommendations.length < 3) {
+      const popularItems = menuData
+        .filter(
+          (item) =>
+            item.isPopular &&
+            !cartIds.includes(item.id) &&
+            !recommendations.some(
+              (recommendation) =>
+                recommendation.item.id === item.id
+            )
+        )
+        .filter((item) => {
+          if (cartIsVegetarian) return item.isVeg;
+          return true;
+        });
+
+      popularItems.forEach((item) => {
+        if (recommendations.length < 4) {
+          recommendations.push({
+            item,
+            type: "Customer Favourite",
+            score: 80,
+            reason:
+              "One of our most frequently ordered and highly preferred dishes.",
+          });
+        }
+      });
+    }
+
+    // EMPTY CART STATE
+    if (cart.length === 0) {
+      const popularItems = menuData
+        .filter((item) => item.isPopular)
+        .slice(0, 4);
+
+      popularItems.forEach((item, index) => {
+        recommendations.push({
+          item,
+          type: index === 0 ? "Top AI Pick" : "Popular Choice",
+          score: 95 - index * 4,
+          reason:
+            "Recommended based on overall customer ordering trends and popularity.",
         });
       });
     }
 
-    recommendations.forEach(({ item, reason }) => {
-      const recCard = document.createElement("div");
-      recCard.className = "recommend-card";
-      recCard.innerHTML = `
+    recommendations.slice(0, 4).forEach((recommendation) => {
+      const { item, type, score, reason } = recommendation;
+
+      const card = document.createElement("div");
+      card.className = "recommend-card";
+
+      card.innerHTML = `
         <div class="rec-title">
           <span>${item.icon}</span>
-          <span>${item.name}</span>
-          <span class="ai-tag">AI Pick</span>
+
+          <div>
+            <strong>${item.name}</strong>
+            <small>${type}</small>
+          </div>
+
+          <span class="ai-tag">
+            ${score}% Match
+          </span>
         </div>
-        <div class="rec-price">${formatCurrency(item.price)}</div>
-        <div class="rec-reason">${reason}</div>
-        <button class="add-btn btn-rec-add">Add to Order +</button>
+
+        <div class="rec-price">
+          ${formatCurrency(item.price)}
+        </div>
+
+        <div class="rec-reason">
+          ${reason}
+        </div>
+
+        <button class="add-btn btn-rec-add">
+          Add Recommendation +
+        </button>
       `;
 
-      recCard.querySelector(".btn-rec-add").addEventListener("click", () => {
-        addToCart(item.id);
-      });
+      card
+        .querySelector(".btn-rec-add")
+        .addEventListener("click", () => {
+          addToCart(item.id);
+        });
 
-      recommendGrid.appendChild(recCard);
+      recommendGrid.appendChild(card);
     });
   }
 
+  /* ==========================================================================
+     7. AI SMART DISCOUNT
+     ========================================================================== */
+
   aiDiscountBtn.addEventListener("click", () => {
     const subtotal = cart.reduce(
-      (acc, item) => acc + item.price * item.quantity,
+      (total, item) => total + item.price * item.quantity,
       0
     );
-    let suggestedDiscount = 0;
 
-    if (subtotal >= 1000) {
-      suggestedDiscount = 15;
+    let discount = 0;
+
+    if (subtotal >= 1500) {
+      discount = 18;
+    } else if (subtotal >= 1000) {
+      discount = 15;
+    } else if (subtotal >= 700) {
+      discount = 12;
     } else if (subtotal >= 500) {
-      suggestedDiscount = 10;
+      discount = 10;
     } else if (subtotal > 0) {
-      suggestedDiscount = 5;
+      discount = 5;
     } else {
-      showToast("Add items to cart to calculate AI discount");
+      showToast("Add items to your cart first");
       return;
     }
 
-    discountInput.value = suggestedDiscount;
+    discountInput.value = discount;
     calculateTotals();
-    showToast(`AI Smart Discount applied: ${suggestedDiscount}%`);
+
+    showToast(`AI recommended a ${discount}% discount for this order`);
   });
 
   /* ==========================================================================
-     7. BILL GENERATION & MODAL
+     8. BILL GENERATION
      ========================================================================== */
+
   confirmOrderBtn.addEventListener("click", () => {
     if (cart.length === 0) {
-      showToast("Cart is empty. Please add items before placing order.");
+      showToast("Your cart is empty. Please add items first.");
       return;
     }
 
-    const name = customerNameInput.value.trim() || "Guest Customer";
-    const table = tableNumberSelect.value;
-    const totals = calculateTotals();
-    const dateStr = new Date().toLocaleString();
-    const billNo = "SR-" + Math.floor(100000 + Math.random() * 900000);
+    const customerName =
+      customerNameInput.value.trim() || "Guest Customer";
 
-    let itemsHtml = cart
+    const orderType = tableNumberSelect.value;
+    const totals = calculateTotals();
+
+    const billNumber = `SR-${Math.floor(
+      100000 + Math.random() * 900000
+    )}`;
+
+    const orderDate = new Date().toLocaleString();
+
+    const itemsHtml = cart
       .map(
         (item) => `
-      <tr>
-        <td>${item.name} x ${item.quantity}</td>
-        <td>${formatCurrency(item.price * item.quantity)}</td>
-      </tr>
-    `
+          <tr>
+            <td>${item.name} × ${item.quantity}</td>
+            <td>${formatCurrency(item.price * item.quantity)}</td>
+          </tr>
+        `
       )
       .join("");
 
     billContent.innerHTML = `
       <div class="bill-header">
-        <h2>Spice Route</h2>
-        <p>AI Billing & Dining Experience</p>
+        <h2>🍽️ Spice Route</h2>
+        <p>AI-Powered Billing & Dining Experience</p>
       </div>
+
       <div class="bill-meta">
         <div>
-          <strong>Bill No:</strong> ${billNo}<br>
-          <strong>Customer:</strong> ${name}
+          <strong>Bill No:</strong> ${billNumber}<br>
+          <strong>Customer:</strong> ${customerName}
         </div>
+
         <div style="text-align: right;">
-          <strong>Date:</strong> ${dateStr}<br>
-          <strong>Type:</strong> ${table}
+          <strong>Date:</strong> ${orderDate}<br>
+          <strong>Order:</strong> ${orderType}
         </div>
       </div>
+
       <table class="bill-table">
         <thead>
           <tr>
-            <th>Item & Qty</th>
-            <th style="text-align: right;">Amount</th>
+            <th>Item & Quantity</th>
+            <th>Amount</th>
           </tr>
         </thead>
+
         <tbody>
           ${itemsHtml}
         </tbody>
       </table>
+
       <div class="bill-totals">
-        <div><span>Subtotal</span><span>${formatCurrency(totals.subtotal)}</span></div>
-        <div><span>Tax (5%)</span><span>${formatCurrency(totals.tax)}</span></div>
-        <div><span>Discount (${totals.discountPercent}%)</span><span>- ${formatCurrency(totals.discount)}</span></div>
-        <div class="grand"><span>Grand Total</span><span>${formatCurrency(totals.grandTotal)}</span></div>
+        <div>
+          <span>Subtotal</span>
+          <span>${formatCurrency(totals.subtotal)}</span>
+        </div>
+
+        <div>
+          <span>Tax (5%)</span>
+          <span>${formatCurrency(totals.tax)}</span>
+        </div>
+
+        <div>
+          <span>AI Discount (${totals.discountPercent}%)</span>
+          <span>- ${formatCurrency(totals.discount)}</span>
+        </div>
+
+        <div class="grand">
+          <span>Grand Total</span>
+          <span>${formatCurrency(totals.grandTotal)}</span>
+        </div>
       </div>
+
       <div class="bill-footer">
-        <p>Thank you for dining with us!</p>
-        <p>Powered by AI Billing System</p>
+        <p>Thank you for dining with Spice Route!</p>
+        <p>Powered by our AI-Enabled Restaurant Billing System 🤖</p>
       </div>
     `;
 
@@ -515,29 +774,46 @@ document.addEventListener("DOMContentLoaded", () => {
     billModalOverlay.classList.remove("active");
   });
 
+  billModalOverlay.addEventListener("click", (event) => {
+    if (event.target === billModalOverlay) {
+      billModalOverlay.classList.remove("active");
+    }
+  });
+
   newOrderBtn.addEventListener("click", () => {
     cart = [];
     customerNameInput.value = "";
     discountInput.value = 0;
+
     updateCartUI();
+
     billModalOverlay.classList.remove("active");
-    showToast("New order session started");
+    showToast("New order started successfully");
   });
 
   clearCartBtn.addEventListener("click", () => {
+    if (cart.length === 0) {
+      showToast("Your cart is already empty");
+      return;
+    }
+
     cart = [];
     updateCartUI();
-    showToast("Cart cleared");
+
+    showToast("Cart cleared successfully");
   });
 
   /* ==========================================================================
-     8. AI ASSISTANT & VOICE RECOGNITION
+     9. AI RESTAURANT ASSISTANT
      ========================================================================== */
-  function appendChatMessage(text, sender) {
-    const msg = document.createElement("div");
-    msg.className = `chat-msg ${sender}`;
-    msg.textContent = text;
-    chatMessages.appendChild(msg);
+
+  function appendChatMessage(message, sender) {
+    const messageElement = document.createElement("div");
+
+    messageElement.className = `chat-msg ${sender}`;
+    messageElement.textContent = message;
+
+    chatMessages.appendChild(messageElement);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
@@ -546,84 +822,125 @@ document.addEventListener("DOMContentLoaded", () => {
     let reply = "";
 
     if (q.includes("veg") || q.includes("vegetarian")) {
-      const vegItems = menuData
-        .filter((m) => m.isVeg)
-        .map((m) => `${m.name} (${formatCurrency(m.price)})`)
-        .join("\n• ");
-      reply = `Here are our top Vegetarian options:\n• ${vegItems}`;
-    } else if (q.includes("popular") || q.includes("bestseller") || q.includes("best")) {
-      const populars = menuData
-        .filter((m) => m.isPopular)
-        .map((m) => `${m.name} (${formatCurrency(m.price)})`)
-        .join("\n• ");
-      reply = `Our most popular dishes are:\n• ${populars}`;
-    } else if (q.includes("500") || q.includes("under")) {
-      reply = `For under ₹500, I recommend:\n• Paneer Tikka Masala (${formatCurrency(290)})\n• Garlic Naan (${formatCurrency(50)})\n• Masala Chai (${formatCurrency(40)})\nTotal: ₹380!`;
+      const items = menuData
+        .filter((item) => item.isVeg)
+        .map((item) => `• ${item.name} (${formatCurrency(item.price)})`)
+        .join("\n");
+
+      reply = `Here are our vegetarian options:\n${items}`;
+    } else if (
+      q.includes("popular") ||
+      q.includes("best") ||
+      q.includes("bestseller")
+    ) {
+      const items = menuData
+        .filter((item) => item.isPopular)
+        .map((item) => `• ${item.name} (${formatCurrency(item.price)})`)
+        .join("\n");
+
+      reply = `Our customer favourites are:\n${items}`;
+    } else if (
+      q.includes("500") ||
+      q.includes("budget") ||
+      q.includes("under")
+    ) {
+      reply =
+        "For a meal under ₹500, I recommend:\n\n" +
+        "• Paneer Tikka Masala – ₹290\n" +
+        "• Garlic Naan – ₹50\n" +
+        "• Masala Chai – ₹40\n\n" +
+        "Total: ₹380";
     } else if (q.includes("spicy")) {
-      const spicy = menuData
-        .filter((m) => m.isSpicy)
-        .map((m) => `${m.name} (${formatCurrency(m.price)})`)
-        .join("\n• ");
-      reply = `If you like spicy food, try these:\n• ${spicy}`;
-    } else if (q.includes("dessert") || q.includes("sweet")) {
-      const desserts = menuData
-        .filter((m) => m.category === "Desserts")
-        .map((m) => `${m.name} (${formatCurrency(m.price)})`)
-        .join("\n• ");
-      reply = `Here are our sweet treats:\n• ${desserts}`;
+      const items = menuData
+        .filter((item) => item.isSpicy)
+        .map((item) => `• ${item.name} (${formatCurrency(item.price)})`)
+        .join("\n");
+
+      reply = `If you enjoy spicy food, try:\n${items}`;
+    } else if (
+      q.includes("dessert") ||
+      q.includes("sweet")
+    ) {
+      const items = menuData
+        .filter((item) => item.category === "Desserts")
+        .map((item) => `• ${item.name} (${formatCurrency(item.price)})`)
+        .join("\n");
+
+      reply = `Here are our desserts:\n${items}`;
+    } else if (
+      q.includes("recommend") ||
+      q.includes("suggest")
+    ) {
+      reply =
+        "My recommendation is to choose a Main Course, pair it with Garlic Naan or Jeera Rice, add a refreshing beverage, and finish with Gulab Jamun for a complete dining experience!";
     } else {
-      reply = `I'm here to help! You can ask me for vegetarian options, popular items, spicy dishes, or meal recommendations under budget.`;
+      reply =
+        "I'm here to help! You can ask me about vegetarian dishes, popular items, spicy food, desserts, prices, or recommendations based on your budget.";
     }
 
     setTimeout(() => {
       appendChatMessage(reply, "bot");
-    }, 400);
+    }, 500);
   }
 
   function handleSendChat() {
-    const text = chatInput.value.trim();
-    if (!text) return;
-    appendChatMessage(text, "user");
+    const message = chatInput.value.trim();
+
+    if (!message) return;
+
+    appendChatMessage(message, "user");
+
     chatInput.value = "";
-    processAIQuery(text);
+
+    processAIQuery(message);
   }
 
   chatSendBtn.addEventListener("click", handleSendChat);
-  chatInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") handleSendChat();
+
+  chatInput.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      handleSendChat();
+    }
   });
 
   document.querySelectorAll(".quick-chip").forEach((chip) => {
     chip.addEventListener("click", () => {
-      const q = chip.getAttribute("data-q");
-      appendChatMessage(q, "user");
-      processAIQuery(q);
+      const query = chip.dataset.q;
+
+      appendChatMessage(query, "user");
+      processAIQuery(query);
     });
   });
 
-  // Web Speech API Integration
+  /* ==========================================================================
+     10. VOICE INPUT
+     ========================================================================== */
+
   const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
   if (SpeechRecognition) {
     const recognition = new SpeechRecognition();
+
     recognition.continuous = false;
-    recognition.lang = "en-US";
+    recognition.lang = "en-IN";
 
     recognition.onstart = () => {
       isListening = true;
       voiceInputBtn.classList.add("listening");
-      showToast("Listening... Speak now");
+      showToast("Listening... Please speak now");
     };
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
+
       chatInput.value = transcript;
       handleSendChat();
     };
 
     recognition.onerror = () => {
-      showToast("Voice recognition error or canceled");
+      showToast("Unable to recognize your voice. Please try again.");
     };
 
     recognition.onend = () => {
@@ -640,89 +957,113 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   } else {
     voiceInputBtn.addEventListener("click", () => {
-      showToast("Voice input is not supported in this browser.");
+      showToast(
+        "Voice input is not supported by this browser."
+      );
     });
   }
 
   /* ==========================================================================
-     9. INSIGHTS SECTION RENDERING
+     11. RESTAURANT INSIGHTS
      ========================================================================== */
+
   function renderInsights() {
-    // Popular dishes chart
     popularChart.innerHTML = insightsData.popularDishes
       .map((item) => {
-        const pct = (item.count / item.max) * 100;
+        const percentage = (item.count / item.max) * 100;
+
         return `
-        <div class="bar-row">
-          <span class="bar-label">${item.name}</span>
-          <div class="bar-track">
-            <div class="bar-fill" style="width: ${pct}%;">${item.count}</div>
+          <div class="bar-row">
+            <span class="bar-label">${item.name}</span>
+
+            <div class="bar-track">
+              <div
+                class="bar-fill"
+                style="width: ${percentage}%"
+              >
+                ${item.count}
+              </div>
+            </div>
           </div>
-        </div>
-      `;
+        `;
       })
       .join("");
 
-    // Frequently ordered together
     comboList.innerHTML = insightsData.frequentCombos
       .map(
         (combo) => `
-      <li>
-        <span>${combo.pair}</span>
-        <strong>${combo.percentage}</strong>
-      </li>
-    `
+          <li>
+            <span>${combo.pair}</span>
+            <strong>${combo.percentage}</strong>
+          </li>
+        `
       )
       .join("");
 
-    // Peak hours chart
     peakChart.innerHTML = insightsData.peakHours
       .map((item) => {
-        const pct = (item.volume / item.max) * 100;
+        const percentage = (item.volume / item.max) * 100;
+
         return `
-        <div class="bar-row">
-          <span class="bar-label">${item.time}</span>
-          <div class="bar-track">
-            <div class="bar-fill" style="width: ${pct}%;">${item.volume}%</div>
+          <div class="bar-row">
+            <span class="bar-label">${item.time}</span>
+
+            <div class="bar-track">
+              <div
+                class="bar-fill"
+                style="width: ${percentage}%"
+              >
+                ${item.volume}%
+              </div>
+            </div>
           </div>
-        </div>
-      `;
+        `;
       })
       .join("");
 
-    // Low performing items
     lowList.innerHTML = insightsData.lowPerforming
       .map(
         (item) => `
-      <li>
-        <span>${item.name}</span>
-        <span style="color: var(--text-light);">${item.text}</span>
-      </li>
-    `
+          <li>
+            <span>${item.name}</span>
+            <span style="color: var(--text-light);">
+              ${item.text}
+            </span>
+          </li>
+        `
       )
       .join("");
 
-    // Suggested promotions
     promoList.innerHTML = insightsData.promotions
-      .map((promo) => `<li>${promo}</li>`)
+      .map((promotion) => `<li>${promotion}</li>`)
       .join("");
   }
 
   /* ==========================================================================
-     10. INITIALIZATION & LISTENERS
+     12. NAVIGATION & EVENT LISTENERS
      ========================================================================== */
+
   navToggle.addEventListener("click", () => {
     navLinks.classList.toggle("active");
   });
 
-  searchInput.addEventListener("input", (e) => {
-    searchQuery = e.target.value;
+  document.querySelectorAll(".nav-links a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("active");
+    });
+  });
+
+  searchInput.addEventListener("input", (event) => {
+    searchQuery = event.target.value;
     renderMenu();
   });
 
   discountInput.addEventListener("input", calculateTotals);
 
-  // Initial Run
+  /* ==========================================================================
+     13. INITIALIZE APPLICATION
+     ========================================================================== */
+
   initCategories();
   renderMenu();
   updateCartUI();
